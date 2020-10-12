@@ -1,63 +1,46 @@
 import { useState } from 'react'
-import { validate } from '../utils/validation'
+import { useValidation } from './useValidation'
 
 export function useInput(options) {
-  if (!options) throw new Error('At least one [name] must be provided')
+  if (!options) throw new Error('At least one option [name] must be provided')
   if (!options.name) throw new Error('Name must be provided')
 
-  const [type] = useState(options.type || 'text')
-  const [name] = useState(options.name)
-  const [placeholder] = useState(options.placeholder || 'Default Placeholder')
-  const [label] = useState(options.label || 'Label')
-  const [id] = useState(options.id || `${type}-${Math.random()}`)
+  const type = options.type || 'text'
+  const id = options.id || `${type}-${Date.now()}`
+  const name = options.name
+  const placeholder = options.placeholder || ''
   const [value, setValue] = useState(options.value || '')
-
-  const inputValidation = options.validation || {}
-
-  const [validation, setValidation] = useState({
-    valid: inputValidation.valid || true,
-    shouldValidate: inputValidation.shouldValidate || false,
-    touched: inputValidation.touched || false,
-    errorMessage: inputValidation.errorMessage || 'Invalid value',
-    options: inputValidation.options
-  })
+  const validation = useValidation(options.validation)
 
   /* Input on change */
   const onChange = (event) => {
     const $value = event.target.value
-    const $params = validation.options
-
-    if (validation.shouldValidate) {
-      const $validate = validate($value, $params)
-
-      setValidation({
-        ...validation,
-        touched: true,
-        valid: $validate.isValid,
-        errorMessage: $validate.msg
-      })
-    } else {
-      setValidation({
-        ...validation,
-        touched: true,
-        valid: true
-      })
-    }
-
+    validation.validate($value)
     setValue($value)
   }
+
+  /* If input is valid */
+  const isValid = validation.isValid()
+
+  /* When input was touched */
+  const onBlur = (event) => validation.onBlur(event)
 
   /* Clear input */
   const clear = () => setValue('')
 
-  const bind = { name, placeholder, value, label, id, onChange }
+  const bind = { type, id, name, placeholder, value, onChange, onBlur }
 
   return {
     bind,
-    bindV: { ...bind, validation },
+    type,
+    id,
     name,
+    placeholder,
     value,
-    clear,
-    validation
+    onBlur,
+    validation: isValid,
+    status: validation.status,
+    onChange,
+    clear
   }
 }

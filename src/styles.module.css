@@ -13,10 +13,10 @@ input {
   box-sizing: border-box;
   border: 1px solid #bebebe;
   padding: 7px;
-  margin: 0 0 5px;
   outline: none;
   width: 100%;
   transition: all 300ms ease-in-out;
+  background-color: #fff;
 }
 
 span {
@@ -25,6 +25,10 @@ span {
   font-weight: bold;
 }
 
-.invalid label {
+input.invalid {
+  border: 1px solid red;
+}
+
+label.invalid  {
   color: #f01f30;
 }

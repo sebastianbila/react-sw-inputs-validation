@@ -3,22 +3,17 @@ import { TextField, useInput } from 'react-sw-inputs-validation'
 
 const App = () => {
   const input = useInput({
-    label: 'Email: ',
-    name: 'email',
-    placeholder: 'Enter your email',
-    validation: {
-      shouldValidate: true,
-      options: [
-        'isEmail',
-        'required',
-        {type: 'minLength', min: 5, msg: 'Min length is 5'}
-      ]
-    }
+    name: 'name',
+    placeholder: 'Enter your name',
+    validation: [
+      { type: 'isEmail', msg: 'Email is wrong, dude' },
+      'required'
+    ]
   })
 
   return (
     <div className="container">
-      <TextField  {...input.bindV} />
+      <TextField {...input.bind} label={'Email input'} validation={input.validation} />
     </div>
   )
 }
