@@ -11,47 +11,37 @@ export default function TextField(props) {
     onChange,
     label,
     id,
-    validation,
-    fieldstyles,
-    className
+    className,
+    validation
   } = props
 
   const htmlFor = id || `${type}-${Math.random()}`
-  let invalidInputStyle = null
-  let invalid = false
-  let error = INVALID_VALUE
 
-  let localStyles = { labelStyle: {}, inputStyle: {}, spanStyle: {} }
-  if (fieldstyles) {
-    localStyles = { ...fieldstyles }
-  }
+  let invalid = false
+  let errorMsg = INVALID_VALUE
 
   if (validation) {
-    const isInvalid = (v) => !v.valid && v.shouldValidate && v.touched
-
-    if (isInvalid(validation)) invalidInputStyle = styles.invalid
-    invalid = isInvalid(validation)
-    error = validation.errorMessage || INVALID_VALUE
+    invalid = !validation.isValid
+    errorMsg = validation.msg
   }
 
   return (
     <div className={className || styles.TextField}>
-      <label style={localStyles.labelStyle} htmlFor={htmlFor}>
+      <label className={invalid ? styles.invalid : null} htmlFor={htmlFor}>
         {label || 'Label'}
       </label>
 
       <input
-        className={invalidInputStyle}
+        className={invalid ? styles.invalid : null}
         type={type || 'text'}
         id={htmlFor}
-        placeholder={placeholder || 'Default placeholder'}
+        placeholder={placeholder || ''}
         value={value}
         onChange={onChange}
-        style={localStyles.inputStyle}
         {...props}
       />
 
-      {invalid ? <span style={localStyles.spanStyle}>{error}</span> : null}
+      {invalid ? <span>{errorMsg}</span> : null}
     </div>
   )
 }

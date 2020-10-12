@@ -16,6 +16,7 @@ export function useForm(inputs) {
   })
 
   return {
-    isFormValid, fields
+    isFormValid,
+    fields
   }
 }
