@@ -14,7 +14,8 @@ import {
   MIN_LENGTH,
   MIN_LENGTH_REQUIRED,
   REGEX_REQUIRED,
-  REQUIRED
+  REQUIRED,
+  CHECKBOX_REQUIRED
 } from './errorMessage'
 
 function preparedResult(isValid, msg) {
@@ -25,6 +26,11 @@ export class Validator {
   required(args) {
     const msg = args.msg || REQUIRED
     return preparedResult(is.not.empty(args.value), msg)
+  }
+
+  checked(args) {
+    const msg = args.msg || CHECKBOX_REQUIRED
+    return preparedResult(args.value, msg)
   }
 
   minLength(args) {
