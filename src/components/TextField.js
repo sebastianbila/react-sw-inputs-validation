@@ -12,7 +12,9 @@ export default function TextField(props) {
     label,
     id,
     className,
-    validation
+    validation,
+    parentstyle,
+    labelstyle
   } = props
 
   const htmlFor = id || `${type}-${Math.random()}`
@@ -26,8 +28,12 @@ export default function TextField(props) {
   }
 
   return (
-    <div className={className || styles.TextField}>
-      <label className={invalid ? styles.invalid : null} htmlFor={htmlFor}>
+    <div className={className || styles.TextField} style={parentstyle}>
+      <label
+        className={invalid ? styles.invalid : null}
+        htmlFor={htmlFor}
+        style={labelstyle}
+      >
         {label || 'Label'}
       </label>
 

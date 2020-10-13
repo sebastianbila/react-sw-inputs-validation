@@ -2,11 +2,13 @@ export function useForm(inputs) {
   let isFormValid = true
   let fields = {}
 
-  inputs.map((input) => {
-    if (input.validation.shouldValidate) {
-      isFormValid = input.validation.touched && input.validation.valid
+  for (const input of inputs) {
+    if (!input.status.isValid) {
+      isFormValid = false
+      break
     }
-  })
+    isFormValid = input.status.isTouched && input.status.isValid
+  }
 
   inputs.map((input) => {
     fields = {

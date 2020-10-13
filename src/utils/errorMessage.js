@@ -1,4 +1,5 @@
 export const REQUIRED = 'Input is required'
+export const CHECKBOX_REQUIRED = 'Checkbox must be checked'
 export const INVALID_DATA = 'Invalid data'
 export const INVALID_EMAIL = 'Email is invalid'
 export const INVALID_URL = 'Url is invalid'

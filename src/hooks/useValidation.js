@@ -6,7 +6,7 @@ export function useValidation(options) {
   const [status, setStatus] = useState({
     isValid: true,
     isTouched: false,
-    errorMessage: ''
+    msg: ''
   })
 
   const setTouched = () => setStatus({ ...status, isTouched: true })
@@ -19,37 +19,38 @@ export function useValidation(options) {
     let msg = ''
     let args = {}
 
-    options.forEach((option) => {
-      const key = option || option.key
+    if (options) {
+      options.forEach((option) => {
+        const key = option.type || option
 
-      /* Pass value to args */
-      args = { ...option, value }
-      if (validator[key]) {
-        /* Validate by args */
-        const result = validator[key](args)
+        /* Pass value to args */
+        args = { option, value }
+        if (validator[key]) {
+          /* Validate by args */
+          const result = validator[key](args)
 
-        if (result && !result.isValid) {
-          isValid = result.isValid
-          msg = result.msg
-        }
+          if (result && !result.isValid) {
+            isValid = result.isValid
+            msg = result.msg
+          }
 
-        /* Set validation status */
-        setStatus({ ...status, isValid, errorMessage: msg })
-      } else throw new Error(`Type -${key}- not provided for validation`)
-    })
+          /* Set validation status */
+          setStatus({ isTouched: true, isValid, msg })
+        } else throw new Error(`Type -${key}- not provided for validation`)
+      })
+    }
     return status
   }
 
-  const onBlur = (event) => {
-    validate(event.target.value)
-  }
+  const onBlur = (event) => validate(event.target.value)
 
-  const isValid = () => ({ isValid: status.isValid, msg: status.errorMessage })
+  const isValid = () => ({ isValid: status.isValid, msg: status.msg })
 
   return {
     onBlur,
     validate,
     isValid,
+    setTouched,
     status,
     setStatus
   }
