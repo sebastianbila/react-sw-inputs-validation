@@ -5,7 +5,9 @@ const App = () => {
 
   const inputs = [
     { name: 'firstName', placeholder: 'First name *', label: 'First name', validation: ['required'] },
-    { name: 'lastName', placeholder: 'Last name', label: 'Last name' },
+    { name: 'lastName', placeholder: 'Last name', label: 'Last name', validation: [
+        {type: 'minLength', min: 6, msg: 'Min length is 6 '}
+      ]},
     { name: 'email', placeholder: 'Email address *', label: 'Email address', validation: ['isEmail'] },
     { type: 'number', name: 'phone', placeholder: 'Phone number*', label: 'Phone number' },
     { type: 'checkbox', name: 'box', checked: false, label: 'Are you 18+?', validation: ['checked'] }

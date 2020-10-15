@@ -24,7 +24,7 @@ export function useValidation(options) {
         const key = option.type || option
 
         /* Pass value to args */
-        args = { option, value }
+        args = { ...option, value }
         if (validator[key]) {
           /* Validate by args */
           const result = validator[key](args)
